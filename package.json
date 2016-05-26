@@ -1,0 +1,20 @@
+{
+  "name": "donthitnext",
+  "version": "0.0.1",
+  "description": "donthitnext.com",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jesalerno84/donthitnext.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jesalerno84/donthitnext/issues"
+  },
+  "homepage": "https://github.com/jesalerno84/donthitnext#readme",
+  "private": true
+}
