@@ -4,7 +4,7 @@
   "description": "donthitnext.com",
   "main": "server.js",
   "scripts": {
-    "test": "mocha",
+    "test": "mocha 'tests/**/*.js'",
     "lint": "eslint controllers/** models/** server.js"
   },
   "repository": {
@@ -29,10 +29,12 @@
     "mocha": "^2.5.3",
     "react": "^15.1.0",
     "redux": "^3.5.2",
+    "sinon": "^1.17.4",
     "webpack": "^1.13.1"
   },
   "dependencies": {
     "express": "^4.13.4",
+    "express-session": "^1.13.0",
     "mongoose": "^4.4.19",
     "passport": "^0.3.2",
     "passport-spotify": "^0.3.0"

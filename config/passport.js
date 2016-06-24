@@ -1,4 +1,4 @@
-const SpotifyStrategy = require('passport-spotify').SpotifyStrategy;
+const SpotifyStrategy = require('passport-spotify').Strategy;
 const authConfig = require('./auth');
 
 module.exports = passport => {
