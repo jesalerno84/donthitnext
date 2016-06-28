@@ -9,7 +9,8 @@ router.get('/spotify', passport.authenticate('spotify',
             'user-read-private',
             'playlist-read-private',
             'playlist-modify-public',
-            'playlist-modify-private'
+            'playlist-modify-private',
+            'user-library-read'
         ],
         showDialog: true 
     }), (req, res) => { 

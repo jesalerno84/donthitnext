@@ -16,8 +16,13 @@ module.exports = passport => {
         clientID: authConfig.clientId,
         clientSecret: authConfig.clientSecret,
         callbackURL: authConfig.callbackUrl
-    }, (accessToken, refreshToken, profile, done) => {
-        User.findOrCreate(profile, (err, user) => {
+    }, (accessToken, refreshToken, params, profile, done) => {
+        profile.auth = {
+            accessToken,
+            refreshToken,
+            expiresIn: params.expires_in
+        };
+        User.findOrCreateWithToken(profile, (err, user) => {
             return done(err, user);
         })
     }));

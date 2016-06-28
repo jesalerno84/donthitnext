@@ -39,6 +39,6 @@ describe('middlewares/auth', () => {
         
         next.callCount.should.equal(0);
         should.not.exist(result);
-        res.redirect.calledWithExactly('/auth/spotify').should.be.true;
+        res.redirect.calledWithExactly('/login').should.be.true;
     });
 });
