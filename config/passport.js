@@ -1,12 +1,15 @@
 const SpotifyStrategy = require('passport-spotify').Strategy;
 const authConfig = require('./auth');
+const User = require('../models/user.js');
 
 module.exports = passport => {
     passport.serializeUser((user, done) => {
-        done(null, user.id);
+        done(null, user.spotify_id);
     });
     passport.deserializeUser((id, done) => {
-        done(null, id);
+        User.findBySpotifyId(id, (err, result) => {
+            done(err, result);
+        });
     });
 
     passport.use(new SpotifyStrategy({
@@ -14,12 +17,8 @@ module.exports = passport => {
         clientSecret: authConfig.clientSecret,
         callbackURL: authConfig.callbackUrl
     }, (accessToken, refreshToken, profile, done) => {
-        process.nextTick(() => {
-            // To keep the example simple, the user's spotify profile is returned to
-            // represent the logged-in user. In a typical application, you would want
-            // to associate the spotify account with a user record in your database,
-            // and return that user instead.
-            return done(null, profile);
-        });
+        User.findOrCreate(profile, (err, user) => {
+            return done(err, user);
+        })
     }));
 };

@@ -1,0 +1,17 @@
+doctype html
+html(lang='en')
+head
+    title= title
+body
+    div(class='container-fluid')
+        div(class='row')
+            div(class='col-md-10')
+                div(class='page-header')
+                    h1 don't hit next
+            div(class='col-md-2')
+                if user
+                    img(class='profile-image', style='background-image: url(' + user.avatar + ');')
+        div(class='row', style='margin-top: 60px')
+            block content
+    link(href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css", rel="stylesheet", integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7", crossorigin="anonymous")
+    link(href='/css/layout.css', rel='stylesheet')  

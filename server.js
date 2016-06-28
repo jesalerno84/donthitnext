@@ -15,6 +15,8 @@ require('./config/passport')(passport);
 
 const app = express();
 
+app.set('view engine', 'jade');
+app.use(express.static('public'));
 app.use(session({ 
     secret: 'ijfoi2jfoi23jfoijf2oijf2jf',
     resave: true,

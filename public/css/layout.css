@@ -1,0 +1,17 @@
+.btn-green {
+    font-size: 14px;
+    line-height: 1.5;
+    border-radius: 500px;
+    padding: 7px 35px;
+    color: #fff;
+    background-color: #2ebd59;
+}
+
+.profile-image {
+	width: 50px;
+	height: 50px;
+	border-radius: 25px;
+	-webkit-border-radius: 25px;
+	-moz-border-radius: 25px;
+    background-size: 50px;
+}
