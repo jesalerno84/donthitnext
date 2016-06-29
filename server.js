@@ -20,11 +20,14 @@ app.use(express.static('public'));
 app.use(session({ 
     secret: 'ijfoi2jfoi23jfoijf2oijf2jf',
     resave: true,
-    saveUninitialized: true 
+    saveUninitialized: true ,
+    httpOnly: false,
+    cookie: {maxAge: 36000000}
 })); 
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(require('./middlewares/sse'))
 app.use(require('./controllers'));
 
 app.listen(3000, () => {
