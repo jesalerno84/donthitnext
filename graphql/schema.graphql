@@ -1,0 +1,62 @@
+schema {
+  query: Query
+}
+
+type album {
+  album_type: String
+  available_markets: [String]
+  href: String
+  id: String
+  images: [image]
+  name: String
+  type: String
+  uri: String
+}
+
+type artist {
+  href: String
+  name: String
+  type: String
+  uri: String
+}
+
+type image {
+  height: Int
+  url: String
+  width: Int
+}
+
+type Query {
+  tracks: [trackInfo]
+}
+
+type track {
+  album: album
+  artists: [artist]
+  available_markets: [String]
+  disc_number: Int
+  duration_ms: Int
+  explicit: Boolean
+  href: String
+  id: String
+  is_playable: Boolean
+  linked_from: trackLink
+  name: String
+  popularity: Int
+  preview_url: String
+  type: String
+  uri: String
+}
+
+type trackInfo {
+  user_id: Int
+  added_on: String
+  track: track
+}
+
+type trackLink {
+  href: String
+  name: String
+  type: String
+  uri: String
+}

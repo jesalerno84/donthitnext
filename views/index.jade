@@ -2,43 +2,48 @@ extends layout
 
 block content
     div(class='col-md-6 col-md-offset-3')
-        .jumbotron
-            h1 Retrieving your saved tracks
-            p In order to build your playlists we need to grab your saved tracks.
-            .progress
-                div(id='saved-track-progress', class='progress-bar progress-bar-success', role='progressbar', aria-valuenow='0', aria-valuemin='0', aria-valuemax='100', style='width:40%').
-                    40% Complete
-    script.
-        if (!!window.EventSource) {
-            var source = new EventSource('/api/streams/tracks/all');
-            source.addEventListener('savedTracks', function (e) {
-                var results = JSON.parse(e.data);
-                var percentage = parseInt(results.loaded / results.total * 100);
-                var div = document.getElementById('saved-track-progress');
-                div.textContent = percentage + '% Complete';
-                div.setAttribute("aria-valuenow", percentage);
-                div.style.width = percentage + '%';
-                if (percentage === 100) { 
-                    e.target.close();
-                }
-            }, false);
-            
-            source.addEventListener('open', function(e) {
-                console.log('connected');
-            }, false)
+//        .jumbotron
+//            h1 Retrieving your saved tracks
+//            p In order to build your playlists we need to grab your saved tracks.
+//            .progress
+//                div(id='saved-track-progress', class='progress-bar progress-bar-success', role='progressbar', aria-valuenow='0', aria-valuemin='0', aria-valuemax='100', style='width:40%').
+//                    40% Complete
+//    script.
+//        if (!!window.EventSource) {
+//            var source = new EventSource('/api/streams/tracks/all');
+//            source.addEventListener('savedTracks', function (e) {
+//                var results = JSON.parse(e.data);
+//                var percentage = parseInt(results.loaded / results.total * 100);
+//                var div = document.getElementById('saved-track-progress');
+//                div.textContent = percentage + '% Complete';
+//                div.setAttribute("aria-valuenow", percentage);
+//                div.style.width = percentage + '%';
+//                if (percentage === 100) { 
+//                    e.target.close();
+//                }
+//            }, false);
+//            
+//            source.addEventListener('open', function(e) {
+//                console.log('connected');
+//            }, false)
 
-            source.addEventListener('error', function(e) {
-                console.log(e);
-                if (e.target.readyState == EventSource.CLOSED) {
-                    console.log('disconnected');
-                }
-                else if (e.target.readyState == EventSource.CONNECTING) {
-                    console.log('connecting');
-                }
-            }, false)
-        } else {
-            console.log("Your browser doesn't support SSE")
-        }
-        $.get('/api/tracks/all', function () {
-            console.log('fetched');
+//            source.addEventListener('error', function(e) {
+//                console.log(e);
+//                if (e.target.readyState == EventSource.CLOSED) {
+//                    console.log('disconnected');
+//                }
+//                else if (e.target.readyState == EventSource.CONNECTING) {
+//                    console.log('connecting');
+//                }
+//            }, false)
+//        } else {
+//            console.log("Your browser doesn't support SSE")
+//        }
+//        $.get('/api/tracks/all', function () {
+//            console.log('fetched');
+            
+            
+            
+            
+            
         });
