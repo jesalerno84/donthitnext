@@ -1,7 +1,11 @@
 extends layout
 
+block bottomScripts
+    script(src="/js/main.js")
+    
 block content
     div(class='col-md-6 col-md-offset-3')
+        #content
 //        .jumbotron
 //            h1 Retrieving your saved tracks
 //            p In order to build your playlists we need to grab your saved tracks.

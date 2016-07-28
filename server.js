@@ -1,35 +1,12 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const passport = require('passport');
-const session = require('express-session');
+import apiServer from './api-server';
+import webpackServer from './webpack-server';
 
-mongoose.connect(process.env.MONGO_URL, (err) => {
-    if (err) {
-        console.log('connection error', err);
-    } else {
-        console.log('connection successful');
-    }
-});
+const PORT = process.env.PORT || 8080;
+const PROD = process.env.NODE_ENV === 'production';
 
-require('./config/passport')(passport);
-
-const app = express();
-
-app.set('view engine', 'jade');
-app.use(express.static('public'));
-app.use(session({ 
-    secret: 'ijfoi2jfoi23jfoijf2oijf2jf',
-    resave: true,
-    saveUninitialized: true ,
-    httpOnly: false,
-    cookie: {maxAge: 36000000}
-})); 
-app.use(passport.initialize());
-app.use(passport.session());
-
-app.use(require('./middlewares/sse'))
-app.use(require('./controllers'));
-
-app.listen(3000, () => {
-    console.log('listening on port 3000');
-});
+if (PROD) {
+    apiServer(PORT);
+} else {
+    apiServer(PORT - 1);
+    webpackServer(PORT);
+}
