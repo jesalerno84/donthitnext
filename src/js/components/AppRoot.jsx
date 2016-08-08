@@ -1,9 +1,8 @@
 import React from 'react';
+import TrackLoader from './TrackLoader';
 
 const AppRoot = () => (
-    <h2>
-        Hello World2
-    </h2>
+    <TrackLoader />
 );
 
 
