@@ -3,13 +3,18 @@ const graphqlRelay = require('graphql-relay');
 
 const Track = require('../../models/track');
 
-const nodeDefinitions = graphqlRelay.nodeDefinitions(globalId => {
-	const idInfo = graphqlRelay.fromGlobalId(globalId);
-	if (idInfo.type === 'trackInfo') {
-		Track.find({_id: idInfo.id});
+const {nodeInterface, nodeField} = graphqlRelay.nodeDefinitions(
+	globalId => {
+		const idInfo = graphqlRelay.fromGlobalId(globalId);
+		if (idInfo.type === 'trackInfo') {
+			Track.find({_id: idInfo.id});
+		}
+		return null;
+	},
+	obj => {
+		return trackInfoType;
 	}
-	return null;
-});
+);
 
 
 
@@ -84,7 +89,8 @@ const trackInfoType = new graphql.GraphQLObjectType({
 		user_id: {type: graphql.GraphQLInt},
 		added_at: {type: graphql.GraphQLString},
 		track: {type: trackType}
-	}
+	},
+	interfaces: [nodeInterface]
 });
 
 
