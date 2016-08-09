@@ -49,8 +49,9 @@ type track {
 }
 
 type trackInfo {
+  id: ID!
   user_id: Int
-  added_on: String
+  added_at: String
   track: track
 }
 

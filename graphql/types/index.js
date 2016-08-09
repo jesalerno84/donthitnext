@@ -1,4 +1,16 @@
 const graphql = require('graphql');
+const graphqlRelay = require('graphql-relay');
+
+const Track = require('../../models/track');
+
+const nodeDefinitions = graphqlRelay.nodeDefinitions(globalId => {
+	const idInfo = graphqlRelay.fromGlobalId(globalId);
+	if (idInfo.type === 'trackInfo') {
+		Track.find({_id: idInfo.id});
+	}
+	return null;
+});
+
 
 
 const imageType = new graphql.GraphQLObjectType({
@@ -68,8 +80,9 @@ const trackType = new graphql.GraphQLObjectType({
 const trackInfoType = new graphql.GraphQLObjectType({
 	name: 'trackInfo',
 	fields: {
+		id: graphqlRelay.globalIdField('trackInfo', ti => ti._id),
 		user_id: {type: graphql.GraphQLInt},
-		added_on: {type: graphql.GraphQLString},
+		added_at: {type: graphql.GraphQLString},
 		track: {type: trackType}
 	}
 });
