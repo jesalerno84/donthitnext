@@ -43,7 +43,7 @@ router.get('/streams/tracks/all', (req, res) => {
 });
 
 const importTracks = (req, res) => {
-    Track.remove({ spotify_id: req.user.spotify_id }, () => {
+    Track.collection.remove({ user_id: req.user.spotify_id.toString() }, () => {
         const limit = 50;
         const url = `${spotifyUrls.SAVED_TRACKS}?limit=${limit}`;
 

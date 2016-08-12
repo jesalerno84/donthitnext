@@ -1,5 +1,7 @@
 import React from 'react';
 import TrackLoader from './TrackLoader';
+import TrackList from './TrackList';
+
 
 const AppRoot = ({
     showLoader = false
@@ -8,7 +10,7 @@ const AppRoot = ({
         {showLoader ? 
             <TrackLoader />
         : 
-            <h2>Let's do this!</h2>
+            <TrackList />
         }
     </div>
 );
