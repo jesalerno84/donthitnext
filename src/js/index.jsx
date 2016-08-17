@@ -3,13 +3,14 @@ import {render} from 'react-dom';
 import {RootContainer} from 'react-relay';
 
 import AppRoot from './components/AppRoot';
-import mainRoute from './routes/mainRoute';
+import MainRoute from './routes/mainRoute';
 
+const mainRoute = new MainRoute();
 
 render(
     <RootContainer
         Component={AppRoot}
-        Route={mainRoute}
+        route={mainRoute}
      />,
     document.getElementById('content')
 );

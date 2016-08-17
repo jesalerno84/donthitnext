@@ -20,14 +20,30 @@ type artist {
   uri: String
 }
 
+type collection {
+  tracks(after: String, first: Int, before: String, last: Int): TrackConnection
+}
+
 type image {
   height: Int
   url: String
   width: Int
 }
 
+interface Node {
+  id: ID!
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
 type Query {
-  tracks: [trackInfo]
+  node(id: ID!): Node
+  collection: collection
 }
 
 type track {
@@ -48,7 +64,17 @@ type track {
   uri: String
 }
 
-type trackInfo {
+type TrackConnection {
+  pageInfo: PageInfo!
+  edges: [TrackEdge]
+}
+
+type TrackEdge {
+  node: trackInfo
+  cursor: String!
+}
+
+type trackInfo implements Node {
   id: ID!
   user_id: Int
   added_at: String
