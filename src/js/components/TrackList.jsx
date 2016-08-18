@@ -1,9 +1,11 @@
 import React from 'react';
 
-export const TrackList = ({
+const TrackList = ({
 
 }) => (
     <div>
         TrackList
     </div>
 );
+
+export default TrackList;

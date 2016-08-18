@@ -27,16 +27,16 @@ export default Relay.createContainer(AppRoot, {
                     edges {
                         cursor,
                         node {
-                        added_at,
-                        track {
-                            name,
-                            artists {
-                            name
-                            },
-                            album {
-                            name
+                            added_at,
+                            track {
+                                name,
+                                artists {
+                                    name
+                                },
+                                album {
+                                    name
+                                }
                             }
-                        }
                         }
                     }
                 }

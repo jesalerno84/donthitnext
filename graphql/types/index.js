@@ -113,6 +113,7 @@ const collectionType = new graphql.GraphQLObjectType({
 					console.log(args);
 					return connectionFromMongoCursor(Track.collection.find({}).sort({ 'added_at': 1 }), args);
 				} else {
+					console.log('not logged in');
 					return graphqlRelay.connectionFromArray([], args);
 				}
 			}
