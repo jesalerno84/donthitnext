@@ -33,6 +33,7 @@
     "eslint": "^2.12.0",
     "material-ui": "^0.15.1",
     "mocha": "^2.5.3",
+    "node-neat": "^1.7.2",
     "react": "^15.1.0",
     "react-bootstrap": "^0.29.5",
     "react-dom": "^15.1.0",

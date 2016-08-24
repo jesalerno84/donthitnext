@@ -9,7 +9,8 @@ export default port => {
         },
         publicPath: config.output.publicPath,
         hot: true,
-        historyApiFallback: true
+        historyApiFallback: true,
+        noInfo: true
     }).listen(port, 'localhost', (err, result) => {
         if (err) {
             return console.log(err);

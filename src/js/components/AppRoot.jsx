@@ -3,16 +3,18 @@ import Relay from 'react-relay';
 
 import TrackLoader from './TrackLoader';
 import TrackList from './TrackList';
+import TrackDetails from './TrackDetails';
 
 
 const AppRoot = ({
-    showLoader = false
+    showLoader = false,
+    collection
 }) => (
     <div>
         {showLoader ? 
             <TrackLoader />
         : 
-            <TrackList />
+            <TrackList tracks={collection.tracks}/>
         }
     </div>
 );
@@ -27,16 +29,7 @@ export default Relay.createContainer(AppRoot, {
                     edges {
                         cursor,
                         node {
-                            added_at,
-                            track {
-                                name,
-                                artists {
-                                    name
-                                },
-                                album {
-                                    name
-                                }
-                            }
+                            ${TrackDetails.getFragment('trackInfo')}
                         }
                     }
                 }
