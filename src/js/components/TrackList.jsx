@@ -4,10 +4,9 @@ import TrackDetails from './TrackDetails';
 export const TrackList = ({
     tracks
 }) => (
-    <div>
-        <h2>TrackList</h2>
+    <tbody>
         {getTrackNodes(tracks)}
-    </div>
+    </tbody>
 );
 
 const getTrackNodes = tracks => {

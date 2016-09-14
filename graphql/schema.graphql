@@ -21,7 +21,15 @@ type artist {
 }
 
 type collection {
-  tracks(after: String, first: Int, before: String, last: Int): TrackConnection
+  artists(searchTerm: String): [artist]
+  tracks(after: String, first: Int, before: String, last: Int, sortBy: collectionSort, sortDirection: sortDirection, filters: trackFilter): TrackConnection
+}
+
+enum collectionSort {
+  NAME
+  ARTIST
+  ALBUM
+  ADDED_ON
 }
 
 type image {
@@ -44,6 +52,11 @@ type PageInfo {
 type Query {
   node(id: ID!): Node
   collection: collection
+}
+
+enum sortDirection {
+  ASC
+  DESC
 }
 
 type track {
@@ -72,6 +85,10 @@ type TrackConnection {
 type TrackEdge {
   node: trackInfo
   cursor: String!
+}
+
+input trackFilter {
+  explicit: Boolean
 }
 
 type trackInfo implements Node {

@@ -1,6 +1,7 @@
 const graphql = require('graphql');
 const graphqlRelay = require('graphql-relay');
 const connectionFromMongoCursor = require('relay-mongodb-connection');
+const MongoClient = require('mongodb').MongoClient;
 
 const Track = require('../../models/track');
 
@@ -102,22 +103,129 @@ const trackInfoType = new graphql.GraphQLObjectType({
 	interfaces: [nodeInterface]
 });
 
+const collectionSortType = new graphql.GraphQLEnumType({
+	name: 'collectionSort',
+	values: {
+		NAME: { value: 1 },
+		ARTIST: { value: 2 },
+		ALBUM: { value: 3 },
+		ADDED_ON: { value: 4 }
+	}
+});
+
+const sortDirectionType = new graphql.GraphQLEnumType({
+	name: 'sortDirection',
+	values: {
+		ASC: { value: 1 },
+		DESC: { value: -1 }
+	}
+});
+
+const trackFilterType = new graphql.GraphQLInputObjectType({
+	name: 'trackFilter',
+	fields: {
+		explicit: { type: graphql.GraphQLBoolean }
+	}
+});
+
 const collectionType = new graphql.GraphQLObjectType({
 	name: 'collection',
 	fields: {
-		tracks: {
-			type: graphqlRelay.connectionDefinitions({ name: 'Track', nodeType: trackInfoType }).connectionType,
-			args: graphqlRelay.connectionArgs,
+		artists: {
+			type: new graphql.GraphQLList(artistType),
+			args: {
+				searchTerm: {
+					type: graphql.GraphQLString
+				}
+			},
 			resolve: function (_, args, user) {
 				if (user) {
-					console.log(args);
-					return connectionFromMongoCursor(Track.collection.find({}).sort({ 'added_at': 1 }), args);
-				} else {
-					console.log('not logged in');
-					return graphqlRelay.connectionFromArray([], args);
+					const filters = {
+						user_id: user.spotify_id
+					};
+					return new Promise((resolve, reject) => {
+						if (args.searchTerm && args.searchTerm.length > 2) {
+							const regex = new RegExp(`^${args.searchTerm}`);
+							MongoClient.connect(process.env.MONGO_URL, (err, db) => {
+								const collection = db.collection('tracks');
+
+								collection.aggregate(
+									{
+										$project: {
+											name: '$track.artists.name'
+										}
+									},
+									{ $unwind: '$name' },
+									{ $group: { _id: null, name: { $addToSet: '$name' } } },
+									{ $unwind: '$name' },
+									{ $sort: { name: 1 } },
+									{ $match: { name: { $regex: regex } } },
+									{ $group: { _id: null, name: { $push: '$name' } } }
+								).toArray((err, result) => {
+									err ? reject(err) : resolve(result);
+								});
+
+								db.close();
+							});
+
+
+						} else {
+							resolve([]);
+						}
+					});
 				}
 			}
+		},
+		tracks: {
+			type: graphqlRelay.connectionDefinitions({ name: 'Track', nodeType: trackInfoType }).connectionType,
+			args: {
+				...graphqlRelay.connectionArgs,
+	sortBy: {
+		type: collectionSortType
+	},
+	sortDirection: {
+		type: sortDirectionType
+	},
+	filters: {
+		type: trackFilterType
+	}
+	},
+resolve: function (_, args, user) {
+	if (user) {
+		const sortDirection = args.sortDirection ? args.sortDirection : 1;
+		const sort = {};
+		switch (args.sortBy) {
+			case 2:
+				sort['track.artists.name'] = sortDirection;
+				break;
+			case 3:
+				sort['track.album.name'] = sortDirection;
+				break;
+			case 4:
+				sort['added_at'] = sortDirection;
+				break;
+			default:
+				sort['track.name'] = sortDirection;
+				break;
 		}
+
+		const filters = {
+			user_id: user.spotify_id
+		};
+
+		if (args.filters) {
+			if (args.filters.explicit !== undefined) {
+				filters['track.explicit'] = args.filters.explicit;
+			}
+		}
+
+		return connectionFromMongoCursor(Track.collection.find(filters, {}).sort(sort), args);
+	} else {
+		console.log('not logged in');
+		return graphqlRelay.connectionFromArray([], args);
+	}
+}
+}
 	}
 });
 

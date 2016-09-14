@@ -4,13 +4,31 @@ import Relay from 'react-relay';
 const TrackDetails = ({
     trackInfo
 }) => (
-    <div>
-        {trackInfo.track.artists[0].name}
-        {trackInfo.track.name}
-        {trackInfo.track.album.name}
-        {trackInfo.added_at}
-    </div>
+    <tr>
+        <td>
+            <input type="checkbox" />
+        </td>
+        <td>
+            {trackInfo.track.name}
+        </td>
+        <td>
+            {trackInfo.track.artists[0].name}
+        </td>
+        <td>
+            {trackInfo.track.album.name}
+        </td>
+        <td>
+            {trackInfo.added_at}
+        </td>
+        <td>
+            {millesecondsToMinutesAndSeconds(trackInfo.track.duration_ms)}
+        </td>
+    </tr>
 );
+
+const millesecondsToMinutesAndSeconds = (ms) => {
+    return new Date(ms).toISOString().substr(14, 5);
+};
 
 export default Relay.createContainer(TrackDetails, {
     fragments: {
@@ -25,7 +43,8 @@ export default Relay.createContainer(TrackDetails, {
                     album {
                         name,
                         id
-                    }
+                    },
+                    duration_ms
                 }
             }
         `
