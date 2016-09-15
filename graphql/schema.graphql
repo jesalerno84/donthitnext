@@ -22,7 +22,7 @@ type artist {
 
 type collection {
   artists(searchTerm: String): [artist]
-  tracks(after: String, first: Int, before: String, last: Int, sortBy: collectionSort, sortDirection: sortDirection, filters: trackFilter): TrackConnection
+  tracks(after: String, first: Int, before: String, last: Int, sortBy: collectionSort, sortDirection: sortDirection, explicit: Boolean, artistName: String): TrackConnection
 }
 
 enum collectionSort {
@@ -85,10 +85,6 @@ type TrackConnection {
 type TrackEdge {
   node: trackInfo
   cursor: String!
-}
-
-input trackFilter {
-  explicit: Boolean
 }
 
 type trackInfo implements Node {

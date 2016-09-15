@@ -124,7 +124,8 @@ const sortDirectionType = new graphql.GraphQLEnumType({
 const trackFilterType = new graphql.GraphQLInputObjectType({
 	name: 'trackFilter',
 	fields: {
-		explicit: { type: graphql.GraphQLBoolean }
+		explicit: { type: graphql.GraphQLBoolean },
+		artistName: { type: graphql.GraphQLString }
 	}
 });
 
@@ -180,15 +181,10 @@ const collectionType = new graphql.GraphQLObjectType({
 			type: graphqlRelay.connectionDefinitions({ name: 'Track', nodeType: trackInfoType }).connectionType,
 			args: {
 				...graphqlRelay.connectionArgs,
-	sortBy: {
-		type: collectionSortType
-	},
-	sortDirection: {
-		type: sortDirectionType
-	},
-	filters: {
-		type: trackFilterType
-	}
+				sortBy: { type: collectionSortType },
+				sortDirection: { type: sortDirectionType },
+				explicit: { type: graphql.GraphQLBoolean },
+				artistName: { type: graphql.GraphQLString }
 	},
 resolve: function (_, args, user) {
 	if (user) {
@@ -212,11 +208,12 @@ resolve: function (_, args, user) {
 		const filters = {
 			user_id: user.spotify_id
 		};
+		if (args.explicit !== undefined) {
+			filters['track.explicit'] = args.explicit;
+		}
 
-		if (args.filters) {
-			if (args.filters.explicit !== undefined) {
-				filters['track.explicit'] = args.filters.explicit;
-			}
+		if (args.artistName !== undefined) {
+			filters['track.artists.name'] = args.artistName;
 		}
 
 		return connectionFromMongoCursor(Track.collection.find(filters, {}).sort(sort), args);

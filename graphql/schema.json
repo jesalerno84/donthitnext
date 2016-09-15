@@ -197,11 +197,21 @@
                   "defaultValue": null
                 },
                 {
-                  "name": "filters",
+                  "name": "explicit",
                   "description": null,
                   "type": {
-                    "kind": "INPUT_OBJECT",
-                    "name": "trackFilter",
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "artistName",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
                     "ofType": null
                   },
                   "defaultValue": null
@@ -356,27 +366,6 @@
               "deprecationReason": null
             }
           ],
-          "possibleTypes": null
-        },
-        {
-          "kind": "INPUT_OBJECT",
-          "name": "trackFilter",
-          "description": null,
-          "fields": null,
-          "inputFields": [
-            {
-              "name": "explicit",
-              "description": null,
-              "type": {
-                "kind": "SCALAR",
-                "name": "Boolean",
-                "ofType": null
-              },
-              "defaultValue": null
-            }
-          ],
-          "interfaces": null,
-          "enumValues": null,
           "possibleTypes": null
         },
         {

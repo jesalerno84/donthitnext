@@ -24,7 +24,12 @@ const AppRoot = ({
                 <TrackLoader />
                 :
                 <div>
-                    <SearchBox relay={relay} artists={collection.artists} onTextChanged={searchChanged} />
+                    <SearchBox 
+                        relay={relay} 
+                        artists={collection.artists} 
+                        onTextChanged={searchChanged}
+                        onArtistSelected={selectArtist} 
+                    />
                     <TrackFilters />
                     <table>
                         <TrackHeader relay={relay} onHeaderItemClick={sortTracks} />
@@ -55,7 +60,19 @@ const searchChanged = (ev, relay, value) => {
 
     if (!value || (value && (value.length > 2 || value.length === 0))) {
         relay.setVariables({
-            searchTerm: value
+            searchTerm: value,
+            artistName: !value ? undefined : relay.variables.artistName
+        });
+    }
+};
+
+const selectArtist = (ev, relay, artistName) => {
+    ev.preventDefault();
+
+    if (artistName) {
+        relay.setVariables({
+            artistName,
+            searchTerm: undefined
         });
     }
 };
@@ -63,6 +80,8 @@ const searchChanged = (ev, relay, value) => {
 
 export default Relay.createContainer(AppRoot, {
     initialVariables: {
+        artistName: undefined,
+        explicit: undefined,
         count: 250,
         searchTerm: null,
         sortBy: sort.sortBy,
@@ -74,7 +93,8 @@ export default Relay.createContainer(AppRoot, {
                 artists(searchTerm: $searchTerm) {
                     name
                 },
-                tracks(first: $count, sortBy: $sortBy, sortDirection: $sortDirection) {
+                tracks(first: $count, sortBy: $sortBy, sortDirection: $sortDirection, 
+                    artistName: $artistName, explicit: $explicit) {
                     edges {
                         cursor,
                         node {

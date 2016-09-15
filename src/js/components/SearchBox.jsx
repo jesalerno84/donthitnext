@@ -3,12 +3,20 @@ import React from 'react';
 const SearchBox = ({
     artists,
     relay,
+    onArtistSelected,
     onTextChanged
 }) => {
     let textNode;
     const artistNodes = artists ? artists.map((artist, i) => {
         return (
-            <li key={i}>{artist.name}</li>
+            <li key={i}>
+                <a href="#" onClick={ev => {
+                    onArtistSelected(ev, relay, artist.name);
+                    textNode.value = '';
+                }}>
+                    {artist.name}
+                </a>
+            </li>
         );
     }) : null;
     return (
